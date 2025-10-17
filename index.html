@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gender Reveal</title>
+<style>
+    body {
+        background-color: #ffe6f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: 'Arial', sans-serif;
+        color: #d63384;
+        flex-direction: column;
+        text-align: center;
+        overflow: hidden;
+    }
+    h1 {
+        font-size: 4em;
+        margin: 0;
+    }
+    p {
+        font-size: 1.5em;
+        margin-top: 0.5em;
+    }
+    .confetti {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+    }
+    .confetti div {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #ff80bf;
+        animation: fall 3s linear infinite;
+    }
+    @keyframes fall {
+        0% {transform: translateY(-10px) rotate(0deg);}
+        100% {transform: translateY(100vh) rotate(360deg);}
+    }
+</style>
+</head>
+<body>
+
+<script>
+    // Set your password here
+    const password = "01100101 01101110 01101111 01110010 01110100 01111001”; // Change this to your desired password
+    let userPass = prompt(“Sort out the secret code:");
+
+    if(userPass === password) {
+        // Show reveal message
+        document.write('<h1>this child will be a blessing to the both of us </h1>');
+
+        // Create confetti
+        const confettiContainer = document.createElement('div');
+        confettiContainer.className = 'confetti';
+        document.body.appendChild(confettiContainer);
+
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 80%)`;
+            confettiContainer.appendChild(confetti);
+        }
+
+    } else {
+        // Wrong password message
+        document.write('<h1>❌ Try again loser ❌</h1><p>Access denied.</p>');
+    }
+</script>
+
+</body>
+</html>
