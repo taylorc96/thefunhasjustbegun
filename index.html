@@ -17,11 +17,11 @@
         overflow: hidden;
     }
     h1 {
-        font-size: 4em;
+        font-size: 3em;
         margin: 0;
     }
     p {
-        font-size: 1.5em;
+        font-size: 1.2em;
         margin-top: 0.5em;
     }
     .confetti {
@@ -48,12 +48,12 @@
 
 <script>
     // Set your password here
-    const password = "01100101 01101110 01101111 01110010 01110100 01111001”; // Change this to your desired password
-    let userPass = prompt(“Sort out the secret code:");
+    const password = "01100101 01101110 01101111 01110010 01110100 01111001"; 
+    let userPass = prompt("Sort out the secret code:");
 
     if(userPass === password) {
         // Show reveal message
-        document.write('<h1>this child will be a blessing to the both of us </h1>');
+        document.write('<h1> This child will be a blessing to the both of us </h1>');
 
         // Create confetti
         const confettiContainer = document.createElement('div');
@@ -70,7 +70,7 @@
 
     } else {
         // Wrong password message
-        document.write('<h1>❌ Try again loser ❌</h1><p>Access denied.</p>');
+        document.write('<h1>❌ Try again ❌</h1><p>Access denied.</p>');
     }
 </script>
 
