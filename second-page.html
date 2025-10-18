@@ -11,31 +11,84 @@
         align-items: center;
         height: 100vh;
         font-family: 'Arial', sans-serif;
-        color: #d63384;
+        color: #333; 
         flex-direction: column;
         text-align: center;
         overflow: hidden;
         transition: background-color 1s, opacity 1s;
-        opacity: 0; /* hide initially for smooth fade-in */
+        opacity: 0; /* fade-in */
         position: relative;
     }
     #message-container {
         transition: opacity 1s;
+        z-index: 1;
     }
     h1 {
-        font-size: 3em;
-        margin: 0;
+        font-size: 2.5em;
+        margin: 0 0 20px 0;
     }
     p {
         font-size: 1.2em;
         margin-top: 0.5em;
     }
+    #input-container {
+        margin-top: 20px;
+    }
+    input {
+        padding: 10px 12px;
+        font-size: 1em;
+        width: 280px;
+        border-radius: 12px;
+        border: 2px solid #ccc;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        transition: border 0.3s, box-shadow 0.3s;
+    }
+    input:focus {
+        outline: none;
+        border-color: #77c7ff;
+        box-shadow: 0 0 10px rgba(119,199,255,0.5);
+    }
+    button {
+        padding: 10px 18px;
+        font-size: 1em;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        background: #8bc34a; /* neutral green */
+        color: #fff;
+        margin-left: 10px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        transition: background 0.3s, transform 0.2s;
+    }
+    button:hover {
+        background: #7cb342;
+        transform: scale(1.05);
+    }
+    /* Hidden riddle text */
+    .hidden-text {
+        color: #f5f5f5; /* same as background */
+        user-select: text; 
+        white-space: pre-line;
+        font-size: 0.9em;
+        line-height: 1.4em;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+    }
+    /* Highlight styling */
+    .hidden-text::selection {
+        background: #ffe066; 
+        color: #333;
+    }
+    /* Confetti */
     .confetti {
         position: absolute;
         width: 100%;
         height: 100%;
         pointer-events: none;
         overflow: hidden;
+        z-index: 2;
     }
     .confetti div {
         position: absolute;
@@ -48,67 +101,67 @@
         0% {transform: translateY(-10px) rotate(0deg);}
         100% {transform: translateY(100vh) rotate(360deg);}
     }
-    /* Hidden text style */
-    .hidden-text {
-        color: #f5f5f5; /* same as background so it’s invisible */
-        user-select: text; /* allow highlighting */
-        white-space: pre-line; /* keep line breaks */
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        font-size: 0.9em;
-    }
 </style>
 </head>
 <body>
-<div id="message-container"></div>
+
+<div id="message-container">
+    <div id="input-container">
+        <label for="userInput" style="font-weight:bold;">Find the secret, sort the code — maybe it'll come to light. Aim high or call it a night:</label><br>
+        <input type="text" id="userInput" placeholder="Enter code here">
+        <button onclick="checkCode()">Submit</button>
+    </div>
+</div>
 
 <!-- Hidden riddle -->
-<div class="hidden-text">
-Not new, not secret — you’ve seen me before,
-I’m hiding again, yet not behind a door.
-One day you’ll teach ABCs with glee,
-But start it now — go down from A to Z.
+<div class="hidden-text" id="hiddenRiddle">
+Not new, not secret — you’ve seen me before,  
+I’m hiding again, yet not behind a door.  
+One day you’ll teach ABCs with glee,  
+But you should practice now from A to Z.  
 
-The numbers may whisper a code 1-2-3,
-But no last dance will be waiting for me.
+And numbers too! Start simple, 1-2-3,  
+Zero in, because unlike you, there’ll be no last dance for me.  
 </div>
 
 <script>
-    // Fade in body after page load
-    window.onload = () => {
-        document.body.style.opacity = 1;
+window.onload = () => {
+    document.body.style.opacity = 1;
+}
 
-        const password = "01100101 01101110 01101111 01110010 01111001 01110100"; 
-        let userPass = prompt("You thought. Find the secret, sort the code maybe it'll come to light. Aim high or let it go, the choice is yours tonight:");
+const password = "01100101 01101110 01101111 01110010 01111001 01110100";
 
-        const container = document.getElementById('message-container');
+function checkCode() {
+    const userPass = document.getElementById("userInput").value.trim();
+    const container = document.getElementById("message-container");
+    const hiddenRiddle = document.getElementById("hiddenRiddle");
 
-        if(userPass === password) {
-            // Correct password
-            document.body.style.backgroundColor = "#ffb6c1"; 
-            container.innerHTML = '<h1>🎉 This child will be a blessing to the both of us 🎉</h1>';
+    if(userPass === password) {
+        // Remove the hidden riddle
+        hiddenRiddle.style.display = "none";
 
-            // Confetti
-            const confettiContainer = document.createElement('div');
-            confettiContainer.className = 'confetti';
-            document.body.appendChild(confettiContainer);
+        // Change background and show blessing message
+        document.body.style.backgroundColor = "#ffb6c1"; 
+        container.innerHTML = '<h1>🎉 This child will be a blessing to the both of us 🎉</h1>';
 
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
-                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 80%)`;
-                confettiContainer.appendChild(confetti);
-            }
+        // Add confetti
+        const confettiContainer = document.createElement('div');
+        confettiContainer.className = 'confetti';
+        document.body.appendChild(confettiContainer);
 
-        } else {
-            // Wrong password – neutral background
-            document.body.style.backgroundColor = "#f5f5f5";
-            container.style.color = "#333"; 
-            container.innerHTML = '<h1>❌ Try again loser ❌</h1><p>Access denied.</p>';
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 80%)`;
+            confettiContainer.appendChild(confetti);
         }
-    };
+    } else {
+        container.innerHTML = '<h1>❌ Try again ❌</h1><p>Access denied.</p>';
+    }
+}
 </script>
+
 </body>
 </html>
+
