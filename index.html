@@ -2,91 +2,131 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Welcome to the Octagon</title>
+<title>First Challenge</title>
 <style>
     body {
-        background-color: #f5f5f5; /* neutral start color */
+        background-color: #f5f5f5;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
         font-family: 'Arial', sans-serif;
-        color: #d63384;
+        color: #333;
         flex-direction: column;
         text-align: center;
         overflow: hidden;
-        transition: background-color 1s, opacity 1s;
-        opacity: 0; /* hide initially for smooth fade-in */
-    }
-    #message-container {
-        transition: opacity 1s;
+        position: relative;
     }
     h1 {
-        font-size: 3em;
-        margin: 0;
+        font-size: 2em;
+        margin-bottom: 1em;
+    }
+    input, button, p {
+        font-size: 1em;
+    }
+    input {
+        padding: 0.5em;
+        width: 300px;
+        margin-bottom: 1em;
+    }
+    button {
+        padding: 0.5em 1em;
+        cursor: pointer;
+        background-color: #444;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
     }
     p {
-        font-size: 1.2em;
-        margin-top: 0.5em;
+        margin-top: 1em;
+        color: #333;
     }
-    .confetti {
-        position: absolute;
+
+    /* Congrats Nerd screen */
+    #congratsScreen {
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
+        background: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 4em;
+        font-weight: bold;
+        color: #222;
+        opacity: 0;
         pointer-events: none;
-        overflow: hidden;
+        transition: opacity 1s ease;
+        z-index: 998;
     }
-    .confetti div {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background-color: #ff80bf;
-        animation: fall 3s linear infinite;
+    #congratsScreen.show {
+        opacity: 1;
+        pointer-events: auto;
     }
-    @keyframes fall {
-        0% {transform: translateY(-10px) rotate(0deg);}
-        100% {transform: translateY(100vh) rotate(360deg);}
+
+    /* Overlay for fade-to-black */
+    #fadeOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 1s ease;
+        z-index: 999;
     }
 </style>
 </head>
 <body>
-<div id="message-container"></div>
+    <div id="content">
+        <h1>My namesake it is not (thanks a lot Isaiah you suck).<br>
+            If it were up to precious this one would have stuck.<br>
+            Don’t tyre out you are on your way to figuring out the big secret of the day
+        </h1>
+        <input type="text" id="answer" placeholder="Enter your answer here">
+        <br>
+        <button onclick="checkAnswer()">Submit</button>
+        <p id="message"></p>
+    </div>
+
+    <!-- Congrats Nerd screen -->
+    <div id="congratsScreen">Congrats Nerd</div>
+
+    <!-- Fade overlay -->
+    <div id="fadeOverlay"></div>
 
 <script>
-    // Fade in body after page load
-    window.onload = () => {
-        document.body.style.opacity = 1;
+function checkAnswer() {
+    const input = document.getElementById('answer').value.trim();
+    const message = document.getElementById('message');
+    const overlay = document.getElementById('fadeOverlay');
+    const content = document.getElementById('content');
+    const congrats = document.getElementById('congratsScreen');
 
-        const password = "01100101 01101110 01101111 01110010 01111001 01110100"; 
-        let userPass = prompt("You thought. Sort out the secret code:");
+    if(input.toLowerCase() === "tyrone") {
+        // Hide the main content
+        content.style.display = "none";
 
-        const container = document.getElementById('message-container');
+        // Show big Congrats Nerd
+        congrats.classList.add("show");
 
-        if(userPass === password) {
-            // Correct password
-            document.body.style.backgroundColor = "#d4edda"; // green background
-            container.innerHTML = '<h1>🎉 This child will be a blessing to the both of us 🎉</h1>';
+        // Pause for 2 seconds, then fade to black
+        setTimeout(() => {
+            overlay.style.opacity = 1;
+        }, 2000);
 
-            // Confetti
-            const confettiContainer = document.createElement('div');
-            confettiContainer.className = 'confetti';
-            document.body.appendChild(confettiContainer);
-
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
-                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 80%)`;
-                confettiContainer.appendChild(confetti);
-            }
-
-        } else {
-            // Wrong password – neutral background
-            document.body.style.backgroundColor = "#f5f5f5";
-            container.style.color = "#333"; // dark neutral text
-            container.innerHTML = '<h1>❌ Try again loser ❌</h1><p>Access denied.</p>';
-        }
-    };
+        // Redirect after fade
+        setTimeout(() => {
+            window.location.href = "second-page.html"; // replace with your second page URL
+        }, 3500);
+    } else {
+        message.textContent = "Incorrect. Think carefully!";
+    }
+}
 </script>
 </body>
 </html>
