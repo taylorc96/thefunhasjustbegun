@@ -5,7 +5,7 @@
 <title>Welcome to the Octagon</title>
 <style>
     body {
-        background-color: #ffe6f2;
+        background-color: #ffe6f2; /* default background */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -15,6 +15,7 @@
         flex-direction: column;
         text-align: center;
         overflow: hidden;
+        transition: background-color 1s; /* smooth transition for color changes */
     }
     h1 {
         font-size: 3em;
@@ -45,17 +46,20 @@
 </style>
 </head>
 <body>
+<div id="message-container"></div>
 
 <script>
-    // Set your password here
     const password = "01100101 01101110 01101111 01110010 01110100 01111001"; 
     let userPass = prompt("You thought. Sort out the secret code:");
 
-    if(userPass === password) {
-        // Show reveal message
-        document.write('<h1> This child will be a blessing to the both of us </h1>');
+    const container = document.getElementById('message-container');
 
-        // Create confetti
+    if(userPass === password) {
+        // Correct password
+        document.body.style.backgroundColor = "#d4edda"; // green background for correct
+        container.innerHTML = '<h1> This child will be a blessing to the both of us </h1>';
+
+        // Confetti
         const confettiContainer = document.createElement('div');
         confettiContainer.className = 'confetti';
         document.body.appendChild(confettiContainer);
@@ -69,8 +73,10 @@
         }
 
     } else {
-        // Wrong password message
-        document.write('<h1>❌ Try again loser ❌</h1><p>Access denied.</p>');
+        // Wrong password – keep background neutral to avoid hints
+        document.body.style.backgroundColor = "#f5f5f5"; // neutral gray
+        container.innerHTML = '<h1>❌ Try again ❌</h1><p>Access denied.</p>';
+        container.style.color = "#333"; // dark neutral text
     }
 </script>
 
